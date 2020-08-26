@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
       routes: {
         'home': (context) => HomePage(),
       },
+      theme: ThemeData(primaryColor: Colors.deepPurple),
     );
   }
 }
+

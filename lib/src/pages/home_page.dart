@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qrreaderapp/src/pages/direcciones_page.dart';
 import 'package:qrreaderapp/src/pages/mapas_page.dart';
 
+import 'package:barcode_scan/barcode_scan.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -12,9 +14,44 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('QR Scanner'),
+        actions: [
+          IconButton(icon: Icon(Icons.delete_forever), onPressed: () {})
+        ],
+      ),
       body: callPage(currentIndex),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _scanQr,
+        child: Icon(Icons.filter_center_focus),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _crearBottomNavigationBar(),
     );
+  }
+
+  _scanQr() async {
+    dynamic futureString;
+    //Strisng futureString;
+    final _flashOnController = TextEditingController(text: "Flash on");
+    final _flashOffController = TextEditingController(text: "Flash off");
+    final _cancelController = TextEditingController(text: "Cancel");
+
+    try {
+      futureString = await BarcodeScanner.scan(
+          //     options: const ScanOptions(
+          //   useCamera: -1,
+          // )
+          );
+    } catch (e) {
+      futureString = e.toString();
+    }
+    print('Future string: ${futureString.rawContent}');
+
+    if (futureString != null) {
+      print('Tenemos info');
+    }
   }
 
   Widget _crearBottomNavigationBar() {
