@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrreaderapp/src/models/scan_model.dart';
+import 'package:qrreaderapp/src/models/scans_model.dart';
 import 'package:qrreaderapp/src/pages/direcciones_page.dart';
 import 'package:qrreaderapp/src/pages/mapas_page.dart';
 

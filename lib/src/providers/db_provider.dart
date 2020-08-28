@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:path/path.dart';
-import 'package:qrreaderapp/src/models/scan_model.dart';
+import 'package:qrreaderapp/src/models/scans_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
