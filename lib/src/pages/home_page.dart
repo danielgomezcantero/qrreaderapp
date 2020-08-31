@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrreaderapp/src/bloc/scan_bloc.dart';
 import 'package:qrreaderapp/src/models/scans_model.dart';
 import 'package:qrreaderapp/src/pages/direcciones_page.dart';
 import 'package:qrreaderapp/src/pages/mapas_page.dart';
@@ -12,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final scansBloc = new ScansBloc();
+
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,11 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('QR Scanner'),
         actions: [
-          IconButton(icon: Icon(Icons.delete_forever), onPressed: () {})
+          IconButton(
+              icon: Icon(Icons.delete_forever),
+              onPressed: () {
+                scansBloc.borrarScanTodos();
+              })
         ],
       ),
       body: callPage(currentIndex),
@@ -56,7 +63,9 @@ class _HomePageState extends State<HomePage> {
       print('Tenemos info');
       final scan = ScanModel(valor: futureString);
 
-      DBProvider.db.nuevoScan(scan);
+      //DBProvider.db.nuevoScan(scan);
+
+      scansBloc.agregarScan(scan);
     }
   }
 

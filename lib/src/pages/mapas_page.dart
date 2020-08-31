@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qrreaderapp/src/bloc/scan_bloc.dart';
 import 'package:qrreaderapp/src/models/scans_model.dart';
-import 'package:qrreaderapp/src/providers/db_provider.dart';
 
 class MapasPage extends StatefulWidget {
   @override
@@ -8,20 +8,30 @@ class MapasPage extends StatefulWidget {
 }
 
 class _MapasPageState extends State<MapasPage> {
+  final scanBloc = new ScansBloc();
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: DBProvider.db.getTodosScans(),
+    return StreamBuilder(
+      stream: scanBloc.scansStream,
+      //  utiizado con FutureBuilder DBProvider.db.getTodosScans(),
       builder: (BuildContext context, AsyncSnapshot<List<ScanModel>> snapshot) {
         final scans = snapshot.data;
         if (snapshot.hasData) {
+          if (scans.length == 0) {
+            return Center(
+              child: Text('No hay información'),
+            );
+          }
+
           return ListView.builder(
             itemCount: scans.length,
             itemBuilder: (BuildContext context, int index) {
               return Dismissible(
                 key: UniqueKey(),
                 onDismissed: (direction) =>
-                    DBProvider.db.deleteScan(scans[index].id),
+                    scanBloc.borrarScan(scans[index].id),
+
+                // utiizado con FutureBuilder DBProvider.db.deleteScan(),
                 background: Container(
                   color: Colors.red,
                 ),
