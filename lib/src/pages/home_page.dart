@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:qrreaderapp/src/bloc/scan_bloc.dart';
 import 'package:qrreaderapp/src/models/scans_model.dart';
@@ -6,6 +8,7 @@ import 'package:qrreaderapp/src/pages/mapas_page.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:qrreaderapp/src/providers/db_provider.dart';
+import 'package:qrreaderapp/src/utils/utils.dart' as utils;
 
 class HomePage extends StatefulWidget {
   @override
@@ -31,7 +34,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: callPage(currentIndex),
       floatingActionButton: FloatingActionButton(
-        onPressed: _scanQr,
+        onPressed: () => _scanQr(context),
         child: Icon(Icons.filter_center_focus),
         backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -40,14 +43,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _scanQr() async {
+  _scanQr(BuildContext context) async {
     dynamic futureString;
     //Strisng futureString;
     // final _flashOnController = TextEditingController(text: "Flash on");
     // final _flashOffController = TextEditingController(text: "Flash off");
     // final _cancelController = TextEditingController(text: "Cancel");
 
-    futureString = 'htts://fernando-herrera.com';
+    futureString = 'https://fernando-herrera.com/';
     // try {
     //   futureString = await BarcodeScanner.scan(
     //       //     options: const ScanOptions(
@@ -62,10 +65,20 @@ class _HomePageState extends State<HomePage> {
     if (futureString != null) {
       print('Tenemos info');
       final scan = ScanModel(valor: futureString);
-
       //DBProvider.db.nuevoScan(scan);
-
       scansBloc.agregarScan(scan);
+
+      final scan2 = ScanModel(valor: 'geo:-25.412202,-57.538757');
+      //DBProvider.db.nuevoScan(scan);
+      scansBloc.agregarScan(scan2);
+
+      if (Platform.isIOS) {
+        Future.delayed(Duration(milliseconds: 750), () {
+          utils.abrirScan(context, scan);
+        });
+      } else {
+        utils.abrirScan(context, scan);
+      }
     }
   }
 

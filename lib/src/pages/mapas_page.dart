@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qrreaderapp/src/bloc/scan_bloc.dart';
 import 'package:qrreaderapp/src/models/scans_model.dart';
+import 'package:qrreaderapp/src/utils/utils.dart' as utils;
 
 class MapasPage extends StatefulWidget {
   @override
@@ -47,6 +48,9 @@ class _MapasPageState extends State<MapasPage> {
                     color: Colors.grey,
                   ),
                   onTap: () {
+                    if (scans[index].tipo != null) {
+                      utils.abrirScan(context, scans[index]);
+                    }
                     setState(() {});
                   },
                 ),
