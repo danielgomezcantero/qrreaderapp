@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:qrreaderapp/src/bloc/validators.dart';
 import 'package:qrreaderapp/src/models/scans_model.dart';
 import 'package:qrreaderapp/src/providers/db_provider.dart';
 
-class ScansBloc {
+class ScansBloc with Validators {
   static final ScansBloc _singleton = new ScansBloc._internal();
 
   factory ScansBloc() {
@@ -19,19 +20,22 @@ class ScansBloc {
   final _scansController = StreamController<List<ScanModel>>.broadcast();
 
   // metodo para escuchar que datos fluye con el stream
-  Stream<List<ScanModel>> get scansStream => _scansController.stream;
+  Stream<List<ScanModel>> get scansStream =>
+      _scansController.stream.transform(validarGeo);
+  Stream<List<ScanModel>> get scansStreamHttp =>
+      _scansController.stream.transform(validarHttp);
 
   dispose() {
     _scansController?.close();
   }
 
+  obtenerScans() async {
+    _scansController.sink.add(await DBProvider.db.getTodosScans());
+  }
+
   agregarScan(ScanModel scan) async {
     await DBProvider.db.nuevoScan(scan);
     obtenerScans();
-  }
-
-  obtenerScans() async {
-    _scansController.sink.add(await DBProvider.db.getTodosScans());
   }
 
   borrarScan(int id) async {

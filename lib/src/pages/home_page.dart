@@ -50,21 +50,22 @@ class _HomePageState extends State<HomePage> {
     // final _flashOffController = TextEditingController(text: "Flash off");
     // final _cancelController = TextEditingController(text: "Cancel");
 
-    futureString = 'https://fernando-herrera.com/';
-    // try {
-    //   futureString = await BarcodeScanner.scan(
-    //       //     options: const ScanOptions(
-    //       //   useCamera: -1,
-    //       // )
-    //       );
-    // } catch (e) {
-    //   futureString = e.toString();
-    // }
-    // print('Future string: ${futureString.rawContent}');
+    //futureString = 'https://fernando-herrera.com/'; utilizado para pruebas de funcionalidades
+
+    try {
+      futureString = await BarcodeScanner.scan(
+          //     options: const ScanOptions(
+          //   useCamera: -1,
+          // )
+          );
+    } catch (e) {
+      futureString = e.toString();
+    }
+    print('Future string: ${futureString.rawContent}');
 
     if (futureString != null) {
       print('Tenemos info');
-      final scan = ScanModel(valor: futureString);
+      final scan = ScanModel(valor: futureString.rawContent);
       //DBProvider.db.nuevoScan(scan);
       scansBloc.agregarScan(scan);
 

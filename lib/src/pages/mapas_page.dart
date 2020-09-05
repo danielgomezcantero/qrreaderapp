@@ -12,6 +12,7 @@ class _MapasPageState extends State<MapasPage> {
   final scanBloc = new ScansBloc();
   @override
   Widget build(BuildContext context) {
+    scanBloc.obtenerScans();
     return StreamBuilder(
       stream: scanBloc.scansStream,
       //  utiizado con FutureBuilder DBProvider.db.getTodosScans(),
@@ -38,7 +39,7 @@ class _MapasPageState extends State<MapasPage> {
                 ),
                 child: ListTile(
                   leading: Icon(
-                    Icons.cloud_queue,
+                    Icons.map,
                     color: Theme.of(context).primaryColor,
                   ),
                   title: Text(scans[index].valor),
